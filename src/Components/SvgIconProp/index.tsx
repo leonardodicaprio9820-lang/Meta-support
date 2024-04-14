@@ -15,3 +15,5 @@ const SVGIcon: React.FC<Prop> = ({src, alt, className}) => {
 }
 
 export default SVGIcon
+
+
