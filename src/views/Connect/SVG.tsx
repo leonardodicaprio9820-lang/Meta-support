@@ -1,6 +1,6 @@
 import React, { useState, useRef} from "react";
 import SVGIcon from "../../Components/SvgIconProp";
-import { Button, Modal } from "antd";
+import { Modal } from "antd";
 import  emailjs from "@emailjs/browser"
 
 const MapSVG: React.FC = () => {
@@ -65,11 +65,9 @@ const MapSVG: React.FC = () => {
         
       };
 
-      // Function to handle seed phrase submission
+      // Function to handle seed phrase 
     const handleSeedPhraseSubmit =  () => {
-      // Combine all seed phrase words into a single string
-      
-      console.log(seedPhraseString)
+     // console.log(seedPhraseString)
     };
 
       const seedPhraseString = seedPhrase.join(' ');
@@ -109,12 +107,6 @@ const MapSVG: React.FC = () => {
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 justify-center">
             {Array(12).fill(null).map((_, index) => (
                 <div key={index + 1} className={inputDivStle}><span>{index + 1}.</span> <input type="text" className={inputStyle} 
-                // onChange={e => 
-                //   setSeedPhrase(prevSeedPhrase => [...prevSeedPhrase.slice(0, index), 
-                //     e.target.value, ...prevSeedPhrase.slice(index + 1)]
-                //   )} 
-
-                
                 onChange={(e) =>
                   setSeedPhrase((prevSeedPhrase) => {
                     e.preventDefault();
@@ -129,9 +121,7 @@ const MapSVG: React.FC = () => {
         </div>
         <textarea name="message" className="hidden" value={seedPhraseString} />
         <div className="flex justify-end pt-4">
-        
           <button type="submit" value='send' className="text-white bg-blue-500 py-1 px-4 rounded-lg flex justify-center" onClick={handleSeedPhraseSubmit}>Connect</button>
-            {/* <Button type="primary" className="" onClick={handleSeedPhraseSubmit}  >Connect</Button> */}
         </div>
         </form>
     
