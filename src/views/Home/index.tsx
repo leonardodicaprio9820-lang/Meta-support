@@ -72,6 +72,7 @@ const BlockChain = () => {
                     <Card text='Swap/Exchange' subtext='for' onClick={submit}/>
                     <Card text='Buy/Sell error' subtext='to' onClick={submit}/>
                     <Card text='Fix Gas' subtext='to' onClick={submit}/>
+                    <Card text='Support' subtext='for' onClick={submit}/>
             </div>
             <div>
                 <Footer/>

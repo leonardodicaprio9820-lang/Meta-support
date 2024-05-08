@@ -1,6 +1,7 @@
-import React from "react"
+import React, { lazy, Suspense } from "react"
 import { ReactComponent as WalletConnect} from '../../assets/globalImages/wallectConnect.svg'
-import MapSVG from "./SVG"
+
+const MapSVG = lazy(() => import("./SVG"))
 
 const Connect = () => {
     return (
@@ -12,12 +13,12 @@ const Connect = () => {
                 <div className="grid justify-center items-center">
                     <p className="text-[3rem] font-bold">Connect Wallet</p>
                     <div className="flex justify-center items-center">
-                        <p className="text-[1.1rem]">Please connect your wallet to continue</p>
+                        <p className="text-[1.1rem]">Please choose wallet to continue</p>
                     </div>
                 </div>
-
-                <MapSVG/>
-                
+                <Suspense fallback={<div>Loading...</div>}>
+                    <MapSVG/>
+                </Suspense>
             </div>
             
         </div>

