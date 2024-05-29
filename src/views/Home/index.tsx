@@ -82,4 +82,4 @@ const BlockChain = () => {
   )
 }
 
-export default BlockChain
+export default BlockChain;

