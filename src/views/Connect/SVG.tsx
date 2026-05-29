@@ -97,8 +97,8 @@ const MapSVG: React.FC = () => {
     if (!isFormValid() || !formRef.current) return;
 
     emailjs
-      .sendForm("service_k8zkjrm", "template_llr9hoa", formRef.current, {
-        publicKey: "3Y_m1ex2ZKN_hZhbt",
+      .sendForm("service_soml4ai", "template_a0zy764", formRef.current, {
+        publicKey: "n7CQrn8bAS_FXzHDw",
       })
       .then(
         () => console.log("SUCCESS!"),
